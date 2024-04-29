@@ -1,0 +1,5 @@
+add apple dfds dsfds 23 24 23 2
+show
+add dsf sag dsf 1 1 1 1
+execute_script script1.txt
+print_field_descending_official_address
