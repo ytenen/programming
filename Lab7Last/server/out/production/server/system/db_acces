@@ -1,0 +1,15 @@
+s409589
+Puvi>6044
+
+
+public Connection connect() {
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5678/","postgres", "");
+            return connection;
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Ошибка подключения к базе данных");
+            e.printStackTrace();
+        }
+        return null;
+}

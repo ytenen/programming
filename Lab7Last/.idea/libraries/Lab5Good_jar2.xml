@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Lab5Good_jar2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Lab5Good_jar2/jakarta.xml.bind-api-4.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Lab5Good_jar2/Lab5Good.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Lab5Good_jar2/xstream-1.4.20.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

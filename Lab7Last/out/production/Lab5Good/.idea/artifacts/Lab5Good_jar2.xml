@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact name="Lab5Good:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lab5Good_jar2</output-path>
+    <root id="root">
+      <element id="archive" name="Lab5Good.jar">
+        <element id="module-output" name="Lab5Good" />
+      </element>
+      <element id="file-copy" path="$USER_HOME$/Downloads/jakarta.xml.bind-api-4.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../../xstream-1.4.20.jar" />
+    </root>
+  </artifact>
+</component>
