@@ -56,7 +56,6 @@ public class RemoveLower extends Command implements Serializable {
         }
 
         // Update the collection with the filtered organizations
-        CollectionManager.setCollection(finalDec);
         return new Response("Collection changed succsesfully");
     }
 }
