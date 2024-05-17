@@ -49,7 +49,6 @@ public class Program {
             else if ((input[0].equals("add") || input[0].equals("add_if_min")) && user.getPassword()!= null && user.getLogin()!=null) {
                 Organization organization = OrganizationGenerator.createOrganization(IdGenerator.generateId());
                 System.out.println(client.sendRequest(new Request(organization, input, user)).getResult());
-                user = new User(null,null);
             }else if(input[0].equals("exit")){
                 System.out.println("\n" +
                         "                               #include/*\n" +

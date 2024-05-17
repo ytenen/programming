@@ -47,10 +47,6 @@ public class ExecuteScript extends Command implements Serializable {
         if (request.getArgs().length!=2){
             return new Response("Not enough info for execute script");
         }
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         String path = request.getArgs()[1];
         return executeScript(path);
     }

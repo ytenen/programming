@@ -20,11 +20,16 @@ public class DatabaseManager {
     public Connection connect() {
         try {
             Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5678/","postgres", "");
+            BufferedReader bf = new BufferedReader(new FileReader("system/db_acces"));
+            String login = bf.readLine().trim();
+            String password = bf.readLine().trim();
+            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:9999/studs", login, password);
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Ошибка подключения к базе данных");
             e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("File not found");
         }
         return null;
     }

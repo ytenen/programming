@@ -38,10 +38,6 @@ public class StartsFullName extends Command implements Serializable {
     @Override
     public Response execute(Request request) {
         // Get the collection of organizations
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         Organization[] dec = CollectionManager.getCollection().toArray(new Organization[0]);
 
         String[] args = request.getArgs();

@@ -39,10 +39,6 @@ public class AddIfMax extends Command implements Serializable {
     }
     @Override
     public Response execute(Request request) {
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         // Input organization information
         DatabaseManager databaseManager = new DatabaseManager();
         Organization organization = request.getOrganization();

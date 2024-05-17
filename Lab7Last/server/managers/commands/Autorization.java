@@ -19,8 +19,6 @@ public class Autorization extends Command{
         DatabaseManager databaseManager = new DatabaseManager();
         User user = request.getUser();
         if (databaseManager.existUser(user)){
-            CommandManager.setLogin(request.getArgs()[1]);
-            CommandManager.setPassword(request.getArgs()[2]);
             return new Response("Successfull autorization!");
         }
         return new Response("User with this login and password does not exist");

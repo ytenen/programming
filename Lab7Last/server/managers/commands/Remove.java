@@ -38,9 +38,6 @@ public class Remove extends Command implements Serializable {
         }
         // Get the collection of organizations
         User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         String[] args = request.getArgs();
         DatabaseManager databaseManager = new DatabaseManager();
         ArrayDeque<Organization> dec =CollectionManager.getCollection();

@@ -36,9 +36,7 @@ public class RemoveLower extends Command implements Serializable {
     @Override
     public Response execute(Request request) {
         User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
+
         // Get the collection of organizations
         DatabaseManager databaseManager = new DatabaseManager();
         ArrayDeque<Organization> dec = CollectionManager.getCollection();

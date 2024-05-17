@@ -43,19 +43,13 @@ public class ContainsName extends Command implements Serializable {
         if (args.length != 2) {
             return new Response("Incorrect command, try one more time");
         }
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
-        else {
-            // Iterate through organizations and check for partial name match
-            List list = Arrays.stream(dec).filter(organization -> organization.getName().contains(args[1])).toList();
-            // Display appropriate messages based on search results
-            if (list.isEmpty()) {
-                return new Response("The collection does not contain any matching items");
-            } else {
-                return new Response("All suitable elements are displayed: " + list);
-            }
+        // Iterate through organizations and check for partial name match
+        List list = Arrays.stream(dec).filter(organization -> organization.getName().contains(args[1])).toList();
+        // Display appropriate messages based on search results
+        if (list.isEmpty()) {
+            return new Response("The collection does not contain any matching items");
+        } else {
+            return new Response("All suitable elements are displayed: " + list);
         }
     }
 }

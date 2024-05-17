@@ -38,10 +38,6 @@ public class PrintAddress extends Command implements Serializable {
     @Override
     public Response execute(Request request) {
         // Get the collection of organizations
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         ArrayDeque<Organization> dec = CollectionManager.getCollection();
 
         // Check if the collection is empty

@@ -37,9 +37,6 @@ public class Add extends Command implements Serializable {
     @Override
     public Response execute(Request request) {
         User user = request.getUser();
-        if (user.getPassword()== null || user.getLogin()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         DatabaseManager databaseManager = new DatabaseManager();
         Organization organization = request.getOrganization();
         if (databaseManager.addOrganization(organization,user)!=-1){

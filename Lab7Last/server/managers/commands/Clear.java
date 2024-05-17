@@ -34,9 +34,6 @@ public class Clear extends Command implements Serializable {
     public Response execute(Request request) {
         // Clear the collection of organizations
         User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         DatabaseManager databaseManager = new DatabaseManager();
         ArrayDeque<Organization> collection =CollectionManager.getCollection();
         for (Organization organization : collection){

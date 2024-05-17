@@ -26,10 +26,6 @@ public class Help extends Command implements Serializable {
     }
     @Override
     public Response execute(Request request) {
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         return new Response("\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n" +
                 "help - вывести справку по доступным командам\n" +
                 "info - вывести информацию о коллекции\n" +

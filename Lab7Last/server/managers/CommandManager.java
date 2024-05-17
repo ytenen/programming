@@ -30,7 +30,6 @@ public class CommandManager {
         commands.put("info", new Info());
         commands.put("register", new Register());
         commands.put("autorization", new Autorization());
-        commands.put("give_login", new GiveLogin());
     }
 
     public static Response startExecuting(Request request)  {

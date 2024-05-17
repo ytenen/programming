@@ -35,10 +35,6 @@ public class Info extends Command implements Serializable {
     @Override
     public Response execute(Request request) {
         // Get an instance of OrganizationManager
-        User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         // Get the collection of organizations and the initialization date
         ArrayDeque<Organization> collection = CollectionManager.getCollection();
         LocalDate date = CollectionManager.getDate();

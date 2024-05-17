@@ -31,9 +31,6 @@ public class RemoveFirst extends Command implements Serializable {
     @Override
     public Response execute(Request request) {
         User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         DatabaseManager databaseManager = new DatabaseManager();
         ArrayDeque<Organization> dec = CollectionManager.getCollection();
         if (databaseManager.removeFirst(user)==1){

@@ -41,9 +41,6 @@ public class Update extends Command implements Serializable {
             return new Response("Not enough info for update organization, maybe you forgot login or password");
         }
         User user = request.getUser();
-        if (user.getLogin()==null || user.getPassword()==null){
-            return new Response("Authorization is required to enter commands");
-        }
         // Get the collection of organizations
         DatabaseManager databaseManager = new DatabaseManager();
         Organization[] dec = CollectionManager.getCollection().toArray(new Organization[0]);
