@@ -1,11 +1,9 @@
 package managers;
 
-import exeptions.UnknowCommandException;
 import managers.commands.*;
 import network.Request;
 import network.Response;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +27,8 @@ public class CommandManager {
         commands.put("execute_script", new ExecuteScript(commands));
         commands.put("info", new Info());
         commands.put("register", new Register());
-        commands.put("autorization", new Autorization());
+        commands.put("authorization", new Authorization());
+        commands.put("exit_from_account", new ExitFromAccount());
     }
 
     public static Response startExecuting(Request request)  {

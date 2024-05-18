@@ -17,7 +17,7 @@ public class Program {
         Client client = new Client("localhost", port, reconnectionTimeout, maxReconnectionAttempts);
         //При отправке запросов проверять только соответсвие типов вводимых данных типам ожидаемых данных
         //все команды проверять на сервере + все команды перенести на сервер, в клиенте должны быть классы reqest, response, client, program, data classes
-        System.out.println("Введите register [логин] [пароль], затем введите autorization [логин] [пароль]");
+        System.out.println("Введите register [логин] [пароль], затем введите authorization [логин] [пароль]");
         while (true) {
             String cmd = (scanner.nextLine() + " ").trim();
             input = cmd.split(" ");
@@ -36,17 +36,17 @@ public class Program {
                 user = new User(null,null);
                 System.out.println("Exit from account confirmed");
             }
-            else if (input[0].equals("autorization")){
+            else if (input[0].equals("authorization")){
                 if (input.length>=3){
                     user.setLogin(input[1]);
                     user.setPassword(input[2]);
                     System.out.println(client.sendRequest(new Request(input,user)).getResult());
                 }
                 else{
-                    System.out.println("Not enough info for autorization");
+                    System.out.println("Not enough info for authorization");
                 }
             }
-            else if ((input[0].equals("add") || input[0].equals("add_if_min")) && user.getPassword()!= null && user.getLogin()!=null) {
+            else if ((input[0].equals("add") || input[0].equals("add_if_min") || (input[0].equals("remove_lower"))) && user.getPassword()!= null && user.getLogin()!=null) {
                 Organization organization = OrganizationGenerator.createOrganization(IdGenerator.generateId());
                 System.out.println(client.sendRequest(new Request(organization, input, user)).getResult());
             }else if(input[0].equals("exit")){

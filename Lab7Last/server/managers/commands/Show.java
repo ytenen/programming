@@ -34,17 +34,18 @@ public class Show extends Command implements Serializable {
     public Response execute(Request request) {
         // Get the collection of organizations
         ArrayDeque<Organization> dec = CollectionManager.getCollection();
-
         // Check if the collection is empty
         if (dec.isEmpty()) {
             return new Response("Collection is empty");
         }
+        DatabaseManager databaseManager = new DatabaseManager();
+        List<String> list = databaseManager.showUserObjects(request.getUser());
         // Convert the collection to an array for sorting
-        Organization[] org = dec.toArray(new Organization[0]);
 
         // Display the names of organizations in ascending order of annual turnover
-        Arrays.sort(org);
-        List <Organization> list = Arrays.stream(org).sorted().toList();
+        if (list.isEmpty()){
+            return new Response("No organizations for current user");
+        }
         return new Response("All values: " + list);
     }
 }

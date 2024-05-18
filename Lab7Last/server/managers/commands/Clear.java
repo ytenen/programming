@@ -16,6 +16,7 @@ import network.User;
 
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.Collections;
 
 public class Clear extends Command implements Serializable {
     private static final long serialVersionUID = -6487974771420345627L;
@@ -41,6 +42,7 @@ public class Clear extends Command implements Serializable {
                 CollectionManager.removeById(organization.getId());
             }
         }
+        CollectionManager.setCollection(databaseManager.createCollection());
         return new Response("Collection was cleared");
 
     }

@@ -44,9 +44,6 @@ public class RemoveLower extends Command implements Serializable {
         // Input information for the organization to compare
         Organization organization = request.getOrganization();
 
-        // Create a new collection for the filtered organizations
-        ArrayDeque<Organization> finalDec = new ArrayDeque<>();
-
         // Iterate through organizations and add those with higher annual turnover to the new collection
         for (Organization org : dec) {
             if (org.getAnnualTurnover() < organization.getAnnualTurnover()) {

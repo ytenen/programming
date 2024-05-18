@@ -35,7 +35,7 @@ public class AddIfMax extends Command implements Serializable {
     private static final long serialVersionUID = 536612929025814542L;
 
     public AddIfMax(){
-        super("add_if_max", true);
+        super("add_if_max", false);
     }
     @Override
     public Response execute(Request request) {

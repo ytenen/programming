@@ -48,7 +48,7 @@ public class ExecuteScript extends Command implements Serializable {
             return new Response("Not enough info for execute script");
         }
         String path = request.getArgs()[1];
-        return executeScript(path);
+        return executeScript(path,request);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ExecuteScript extends Command implements Serializable {
      *
      * @param filePath The path to the script file.
      */
-    private Response executeScript(String filePath) {
+    private Response executeScript(String filePath, Request request) {
         File file = new File(filePath);
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -77,16 +77,15 @@ public class ExecuteScript extends Command implements Serializable {
                                 if (nestedScriptPath == filePath){
                                     stringBuilder.append("Recursion!" + '\n');
                                 }
-                                executeScript(nestedScriptPath);
+                                executeScript(nestedScriptPath,request);
                             } else if (tokens[0].equals("add")) {
                                 // Execute the add command by providing data for creating a new organization inside the script
-                                addOrganization(tokens);
-                                stringBuilder.append("Organization added" + '\n');
+                                stringBuilder.append(addOrganization(tokens,request.getUser()));
                             } else {
                                 // Execute other commands normally
                                 String[] data = {tokens[0]};
-                                Request request = new Request(data);
-                                stringBuilder.append(command.execute(request).getResult() + '\n');
+                                Request request1 = new Request(data,request.getUser());
+                                stringBuilder.append(command.execute(request1).getResult() + '\n');
                             }
                         } else {
                             System.out.println("Такой команды не существует: " + tokens[0]);
@@ -109,21 +108,22 @@ public class ExecuteScript extends Command implements Serializable {
      *
      * @param tokens The array of command arguments.
      */
-    private void addOrganization(String[] tokens) {
+    private String addOrganization(String[] tokens, User user) {
+        StringBuilder stringBuilder = new StringBuilder();
         DatabaseManager databaseManager = new DatabaseManager();
         // Check if there are enough arguments to create an organization
-        if (tokens.length >= 10) {
+        if (tokens.length >= 8) {
             // Extract data for creating a new organization from the script arguments
-            String name = tokens[3];
-            String fullName = tokens[4];
+            String name = tokens[1];
+            String fullName = tokens[2];
             int id = IdGenerator.generateId();
-            String zipCode = tokens[5];
+            String zipCode = tokens[3];
             Address address = new Address(zipCode);
-            Integer coordinateX = Integer.parseInt(tokens[6]);
-            Integer coordinateY = Integer.parseInt(tokens[7]);
+            Integer coordinateX = Integer.parseInt(tokens[4]);
+            Integer coordinateY = Integer.parseInt(tokens[5]);
             Coordinates coordinates = new Coordinates(coordinateX, coordinateY);
-            Integer annualTurnover = Integer.parseInt(tokens[8]);
-            int orgType = Integer.parseInt(tokens[9]);
+            Integer annualTurnover = Integer.parseInt(tokens[6]);
+            int orgType = Integer.parseInt(tokens[7]);
             OrganizationType type = switch (orgType) {
                 case 1 -> OrganizationType.COMMERCIAL;
                 case 2 -> OrganizationType.PUBLIC;
@@ -132,15 +132,18 @@ public class ExecuteScript extends Command implements Serializable {
                 default -> throw new IllegalStateException("Unexpected value: " + orgType);
             };
             Organization organization = new Organization(id, name, coordinates, annualTurnover, fullName, type, address);
-            User user = new User(tokens[1],tokens[2]);
             if (databaseManager.addOrganization(organization,user)>0){
                 CollectionManager.add(organization);
                 System.out.printf("Организация %s добавлена в коллекцию. Размер коллекции: %d%n", organization.getName(), CollectionManager.getCollection().size());
+                stringBuilder.append("Organization added\n");
             }else{
+                stringBuilder.append("Add failed\n");
                 System.out.println("Add failed");
             }
         } else {
+            stringBuilder.append("Not enough arguments to create organization\n");
             System.out.println("Недостаточно аргументов для создания организации.");
         }
+        return stringBuilder.toString();
     }
 }

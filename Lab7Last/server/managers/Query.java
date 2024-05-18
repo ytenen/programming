@@ -25,6 +25,10 @@ public class Query {
             
             """;
 
+    String getUserObjects =  """
+            select * from organization where user_id = ?;
+            """;
+
     String getUserId = """
             select id from users where (login = ?) and (password =  ?);
             """;

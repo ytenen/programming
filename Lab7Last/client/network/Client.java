@@ -41,6 +41,9 @@ public class Client  {
                 if (response.getResult()=="User with this login and password does not exist"){
                     Program.user = new User(null,null);
                 }
+                if (response.getResult() == "Exit confirmed"){
+                    Program.user = new User(null,null);
+                }
                 this.disconnect();
                 return response;
             } catch (Exception e) {

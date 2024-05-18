@@ -20,16 +20,11 @@ public class DatabaseManager {
     public Connection connect() {
         try {
             Class.forName("org.postgresql.Driver");
-            BufferedReader bf = new BufferedReader(new FileReader("system/db_acces"));
-            String login = bf.readLine().trim();
-            String password = bf.readLine().trim();
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:9999/studs", login, password);
-            return connection;
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5678/", "postgres", "");
         } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Ошибка подключения к базе данных");
+            System.err.println("Error with connection to DataBase");
+
             e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("File not found");
         }
         return null;
     }
@@ -261,6 +256,48 @@ public class DatabaseManager {
             e.printStackTrace();
             System.err.println("Поля объектов не валидны");
             return new ArrayDeque<>();
+        }
+    }
+
+    public List<String> showUserObjects(User user) {
+        Connection connection = connect();
+        List<String> organizations = new ArrayList<>();
+        int user_id = 0;
+        try {
+            Hasher passwordHasherManager = new Hasher();
+            PreparedStatement getSalt = connection.prepareStatement(queryManager.getSalt);
+            getSalt.setString(1,user.getLogin());
+            ResultSet getSaltResult = getSalt.executeQuery();
+            if (!getSaltResult.next()){
+                return new ArrayList<>();
+            }
+            String salt = getSaltResult.getString(1);
+            String password = passwordHasherManager.hashPassword(user.getPassword() + salt );
+            PreparedStatement preparedStatement = connection.prepareStatement(queryManager.getUserId);
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2,password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                user_id = resultSet.getInt(1);
+            }
+            preparedStatement = connection.prepareStatement(queryManager.getUserObjects);
+            preparedStatement.setInt(1,user_id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                organizations.add(new Organization(resultSet.getInt(1), resultSet.getString(2), new Coordinates(resultSet.getDouble(3),
+                        resultSet.getInt(4)),
+                        resultSet.getString(5), resultSet.getInt(6),
+                        resultSet.getString(7),
+                        OrganizationType.valueOf(resultSet.getString(8)),
+                        new Address(resultSet.getString(9))).toString());
+            }
+            return organizations;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            System.err.println("Поля объектов не валидны");
+            return new ArrayList<>();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
