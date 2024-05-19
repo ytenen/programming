@@ -46,7 +46,7 @@ public class Program {
                     System.out.println("Not enough info for authorization");
                 }
             }
-            else if ((input[0].equals("add") || input[0].equals("add_if_min") || (input[0].equals("remove_lower"))) && user.getPassword()!= null && user.getLogin()!=null) {
+            else if ((input[0].equals("add") || input[0].equals("add_if_max") || (input[0].equals("remove_lower"))) && user.getPassword()!= null && user.getLogin()!=null) {
                 Organization organization = OrganizationGenerator.createOrganization(IdGenerator.generateId());
                 System.out.println(client.sendRequest(new Request(organization, input, user)).getResult());
             }else if(input[0].equals("exit")){
