@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 
 public class Server {
@@ -19,6 +21,7 @@ public class Server {
     private DatabaseManager databaseManager;
     private CollectionManager collectionManager;
     public static final Logger serverLogger = Logger.getLogger("logger");
+    ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
@@ -88,22 +91,26 @@ public class Server {
         return response;
     }
 
-    private synchronized void readRequest(ObjectInputStream objectInputStream) {
+    private void readRequest(ObjectInputStream objectInputStream) {
         try {
+            lock.readLock().lock();
             request = (Request) objectInputStream.readObject();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        lock.readLock().unlock();
     }
 
-    private synchronized void sendResponse(Response s,  ObjectOutputStream writer) {
+    private void sendResponse(Response s,  ObjectOutputStream writer) {
         try {
+            lock.writeLock().lock();
             writer.writeObject(s);
             writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        lock.writeLock().unlock();
     }
 }
