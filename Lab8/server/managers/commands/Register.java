@@ -16,7 +16,7 @@ public class Register extends Command implements Serializable {
     private static final long serialVersionUID = -2264026831201018523L;
 
     public Register() {
-        super("register", true);
+        super("register", false);
     }
 
     @Override

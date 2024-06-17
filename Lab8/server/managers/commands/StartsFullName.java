@@ -46,7 +46,7 @@ public class StartsFullName extends Command implements Serializable {
             return new Response("Incorrect command, try one more time");
         }
         // Iterate through organizations and display those whose full names start with the specified substring
-        List list = Arrays.stream(dec).filter(organization -> organization.getName().startsWith(args[1])).toList();
+        List list = Arrays.stream(dec).filter(organization -> organization.getFullName().startsWith(args[1])).toList();
 
         // Display appropriate messages based on the filtering result
         if (list.isEmpty()) {

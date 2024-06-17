@@ -9,7 +9,7 @@ import network.User;
 
 public class Authorization extends Command{
     public Authorization() {
-        super("autorization", true);
+        super("autorization", false);
     }
 
     @Override
@@ -20,6 +20,6 @@ public class Authorization extends Command{
         if (databaseManager.existUser(user)){
             return new Response("Successfull authorization!");
         }
-        return new Response("User with this login and password does not exist");
+        return new Response("This login not exist");
     }
 }

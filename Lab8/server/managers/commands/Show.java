@@ -39,13 +39,13 @@ public class Show extends Command implements Serializable {
             return new Response("Collection is empty");
         }
         DatabaseManager databaseManager = new DatabaseManager();
-        List<String> list = databaseManager.showUserObjects(request.getUser());
+        List<Organization> list = databaseManager.showUserObjects(request.getUser());
         // Convert the collection to an array for sorting
 
         // Display the names of organizations in ascending order of annual turnover
         if (list.isEmpty()){
             return new Response("No organizations for current user");
         }
-        return new Response("All values: " + list);
+        return new Response("All values:",list);
     }
 }

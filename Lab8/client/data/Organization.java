@@ -57,7 +57,16 @@ public class Organization implements Comparable<Organization>, Serializable {
         this.officialAddress = null;
     }
 
-
+    public Organization(String name, double x, int y, int annualTurnover, OrganizationType type, String fullName, String address){
+        this.id = 0;
+        this.name = name;
+        this.coordinates = new Coordinates(x,y);
+        this.annualTurnover = annualTurnover;
+        this.type = type;
+        this.fullName = fullName;
+        this.officialAddress = new Address(address);
+        this.creationDate = new Date();
+    }
 
     public Organization(String[] data) throws Exception {
         // Проверяем корректность всех значений
@@ -108,6 +117,19 @@ public class Organization implements Comparable<Organization>, Serializable {
                 ", type=" + type +
                 ", postalAddress=" + officialAddress +
                 '}';
+    }
+
+    public String toInfo(){
+        return "Organization: " + '\n' +
+                "id = " + id + '\n'+
+                "name = " + name + '\n' +
+                "coordinate X = " + coordinates.getX() + '\n' +
+                "coordinate Y = " + coordinates.getY() + '\n' +
+                "creationDate = " + creationDate + '\n' +
+                "annualTurnover = " + annualTurnover + '\n' +
+                "fullName = " + fullName + '\n' +
+                "type = " + type.toString() + '\n' +
+                "postalAddress = " + officialAddress.getZipCode();
     }
 
     public Address getOfficialAddress() {

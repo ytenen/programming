@@ -11,7 +11,7 @@ public class Coordinates implements Serializable {
     @Serial
     private static final long serialVersionUID = -5031736258320552712L;
     private double x;//Максимальное значение поля 264
-    private Integer y;//Поле не может быть null
+    private Integer y;//Поле не может быть null < 300
     public  Coordinates(double x, int y){
         this.x = x;
         this.y = y;

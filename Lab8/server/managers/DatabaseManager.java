@@ -157,7 +157,7 @@ public class DatabaseManager {
             }
             preparedStatement = connection.prepareStatement(queryManager.deleteObject);
             preparedStatement.setInt(1, user_id);
-            preparedStatement.setLong(2, id);
+            preparedStatement.setInt(2, id);
             resultSet = preparedStatement.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {
@@ -259,9 +259,9 @@ public class DatabaseManager {
         }
     }
 
-    public List<String> showUserObjects(User user) {
+    public List<Organization> showUserObjects(User user) {
         Connection connection = connect();
-        List<String> organizations = new ArrayList<>();
+        List<Organization> organizations = new ArrayList<>();
         int user_id = 0;
         try {
             Hasher passwordHasherManager = new Hasher();
@@ -289,7 +289,7 @@ public class DatabaseManager {
                         resultSet.getString(5), resultSet.getInt(6),
                         resultSet.getString(7),
                         OrganizationType.valueOf(resultSet.getString(8)),
-                        new Address(resultSet.getString(9))).toString());
+                        new Address(resultSet.getString(9))));
             }
             return organizations;
         } catch (IllegalArgumentException e) {
