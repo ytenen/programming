@@ -4,6 +4,7 @@ import data.Organization;
 import data.generators.IdGenerator;
 import data.generators.OrganizationGenerator;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Program {
@@ -13,7 +14,7 @@ public class Program {
     public static User user = new User(null,null);
     public void execute() throws InterruptedException {
         Client client = new Client("localhost", port, reconnectionTimeout, maxReconnectionAttempts);
-        RegistrationPanel registrationPanel = new RegistrationPanel(client);
+        RegistrationPanel registrationPanel = new RegistrationPanel(client,new Locale("ru","RU"));
         //При отправке запросов проверять только соответсвие типов вводимых данных типам ожидаемых данных
         //все команды проверять на сервере + все команды перенести на сервер, в клиенте должны быть классы reqest, response, client, program, data classes
     }

@@ -2,11 +2,13 @@ package network;
 
 import data.Organization;
 import data.OrganizationType;
+import managers.ResourceBundleManager;
 import managers.Validator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,30 +32,35 @@ public class OrganizationPanel extends JFrame{
     private JTextField error;
     private JTextField coordYInfo;
     private JTextField coordYFill;
+    private  Locale locale;
 
-    public OrganizationPanel(Client client,User user,Commands commands,String command){
+    public OrganizationPanel(Client client, User user, Commands commands, String command, Locale locale){
+        this.locale = locale;
+        ResourceBundleManager resourceBundleManager = new ResourceBundleManager(locale);
         setContentPane(OrganizationPanel);
-        setTitle("Внесение организации в реестр");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle(resourceBundleManager.getString("organizationPanelTitle"));
+        setDefaultCloseOperation(2);
         setSize(800,600);
         setLocationRelativeTo(null);
         setVisible(true);
         error.setEditable(false);
-        info.setText("Введите параметры организации и добавьте ее в реестр");
+        clear.setText(resourceBundleManager.getString("organizationPanelClear"));
+        add.setText(resourceBundleManager.getString("organizationPanelAdd"));
+        info.setText(resourceBundleManager.getString("organizationPanelInfo"));
         info.setEditable(false);
-        nameInfo.setText("Введите название:");
+        nameInfo.setText(resourceBundleManager.getString("organizationPanelName"));
         nameInfo.setEditable(false);
-        coordXInfo.setText("Введите координаты на карте по оси х(допустимо дробное значение):");
+        coordXInfo.setText(resourceBundleManager.getString("organizationPanelCoordX"));
         coordXInfo.setEditable(false);
-        coordYInfo.setText("Введите координаты на карте по оси y(только целое значение):");
+        coordYInfo.setText(resourceBundleManager.getString("organizationPanelCoordY"));
         coordYInfo.setEditable(false);
-        annualTurnoverInfo.setText("Введите плановый годовой оборот(округлить до целого):");
+        annualTurnoverInfo.setText(resourceBundleManager.getString("organizationPanelAnnualTurnover"));
         annualTurnoverInfo.setEditable(false);
-        fullNameInfo.setText("Введите полное название организации:");
+        fullNameInfo.setText(resourceBundleManager.getString("organizationPanelFullName"));
         fullNameInfo.setEditable(false);
-        typeInfo.setText("Выберете официальный тип организации:");
+        typeInfo.setText(resourceBundleManager.getString("organizationPanelType"));
         typeInfo.setEditable(false);
-        addressInfo.setText("Введите адрес организации:");
+        addressInfo.setText(resourceBundleManager.getString("organizationPanelAddress"));
         addressInfo.setEditable(false);
         typeFill.addItem(OrganizationType.COMMERCIAL.toString());
         typeFill.addItem(OrganizationType.PUBLIC.toString());

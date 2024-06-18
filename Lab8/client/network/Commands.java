@@ -3,10 +3,13 @@ package network;
 
 
 import data.Organization;
+import managers.ResourceBundleManager;
+import system.TimeThread;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 public class Commands extends JFrame{
     private JPanel CommandsPanel;
@@ -29,22 +32,53 @@ public class Commands extends JFrame{
     private JTextField dopInfo;
     private JButton addInfo;
     private JButton showOnField;
+    private JTextField userLogin;
+    private JButton icon;
+    private JTextField time;
     private String information;
     private User user;
     private Client client;
     private  int id;
 
-    public Commands (User user, Client client){
+    private Locale locale;
+    public Commands (User user, Client client,Locale locale){
         this.client = client;
         this.user = user;
+        this.locale = locale;
+        ResourceBundleManager resourceBundleManager = new ResourceBundleManager(locale);
         setContentPane(CommandsPanel);
-        setTitle("Список команд");
+        setTitle(resourceBundleManager.getString("commandList"));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200,500);
         setLocationRelativeTo(null);
         setVisible(true);
+        if (user.getLogin().equals("Сталин")){
+            icon.setIcon(new ImageIcon("/Users/main/Documents/ITMO/programming/Lab8/client/images/stalin.jpg"));
+        }
+        TimeThread timeThread = new TimeThread(time);
+        timeThread.startUpdating(locale);
+        time.setEditable(false);
+        userLogin.setEditable(false);
+        userLogin.setText(resourceBundleManager.getString("tovarish") + " " + user.getLogin());
         result.setEditable(false);
         dopInfo.setEditable(true);
+        add.setText(resourceBundleManager.getString("add"));
+        addIfMax.setText(resourceBundleManager.getString("addIfMax"));
+        clear.setText(resourceBundleManager.getString("clear"));
+        containsName.setText(resourceBundleManager.getString("containsName"));
+        executeScript.setText(resourceBundleManager.getString("execute_script"));
+        dopInfo.setText(resourceBundleManager.getString("dopInfo"));
+        help.setText(resourceBundleManager.getString("help"));
+        info.setText(resourceBundleManager.getString("info"));
+        remove.setText(resourceBundleManager.getString("remove"));
+        removeFirst.setText(resourceBundleManager.getString("removeFirst"));
+        removeLower.setText(resourceBundleManager.getString("removeLower"));
+        addInfo.setText(resourceBundleManager.getString("addInfo"));
+        show.setText(resourceBundleManager.getString("show"));
+        startsFullName.setText(resourceBundleManager.getString("startFullName"));
+        update.setText(resourceBundleManager.getString("update"));
+        showOnField.setText(resourceBundleManager.getString("showOnField"));
+        exit.setText(resourceBundleManager.getString("exit"));
         if (!user.getLogin().equals("Сталин")){
             toGulag.setVisible(false);
         }
@@ -52,7 +86,7 @@ public class Commands extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                ExitPanel exitPanel = new ExitPanel(client);
+                ExitPanel exitPanel = new ExitPanel(client,locale,user);
             }
         });
         clear.addActionListener(new ActionListener() {
@@ -111,7 +145,7 @@ public class Commands extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String res = result.getText();
-                res+= '\n' + "Введите сочетание букв, которое должно содержать название организации в поле дополнительной информации и нажмите добавить:" + '\n';
+                res+= '\n' + resourceBundleManager.getString("containsNameText") + '\n';
                 result.setText(res);
                 addInfo.addActionListener(new ActionListener() {
                     @Override
@@ -136,7 +170,7 @@ public class Commands extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String res = result.getText();
-                res+= '\n' + "Введите идентификатор организации, которую следует упразднить в поле дополнительной информации и нажмите добавить:" + '\n';
+                res+= '\n' + resourceBundleManager.getString("removeText") + '\n';
                 result.setText(res);
                 addInfo.addActionListener(new ActionListener() {
                     @Override
@@ -161,7 +195,7 @@ public class Commands extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String res = result.getText();
-                res+= '\n' + "Введите сочетание букв,с которого должно начинаться полное название организации в поле дополнительной информации и нажмите добавить:" + '\n';
+                res+= '\n' + resourceBundleManager.getString("startsFullNameText") + '\n';
                 result.setText(res);
                 addInfo.addActionListener(new ActionListener() {
                     @Override
@@ -185,22 +219,19 @@ public class Commands extends JFrame{
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"add");
+                OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"add",locale);
             }
         });
         addIfMax.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"add_if_max");
+                OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"add_if_max",locale);
             }
         });
         removeLower.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"remove_lower");
+                OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"remove_lower",locale);
             }
         });
 
@@ -208,7 +239,7 @@ public class Commands extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String res = result.getText();
-                res+= '\n' + "Введите идентификатор организации, информацию о которой нужно обновить в поле дополнительной информации и нажмите добавить:" + '\n';
+                res+= '\n' + resourceBundleManager.getString("updateText") + '\n';
                 result.setText(res);
                 addInfo.addActionListener(new ActionListener() {
                     @Override
@@ -216,14 +247,13 @@ public class Commands extends JFrame{
                         information = dopInfo.getText();
                         try {
                             Commands.this.id = Integer.parseInt(information);
-                            setVisible(false);
-                            OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"update");
+                            OrganizationPanel panel = new OrganizationPanel(client,user,Commands.this,"update",locale);
                             for (ActionListener listener : addInfo.getActionListeners()) {
                                 addInfo.removeActionListener(listener);
                             }
                         } catch (Exception ex) {
                             String res = result.getText();
-                            res+= '\n' + "Неверный формат идентификатора";
+                            res+= '\n' + resourceBundleManager.getString("wrongIdFormat");
                             result.setText(res);
                             ex.printStackTrace();
                         }
@@ -236,13 +266,41 @@ public class Commands extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                ShowPanel showPanel = new ShowPanel(client,user,Commands.this);
+                ShowPanel showPanel = new ShowPanel(client,user,Commands.this,locale);
             }
         });
         showOnField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FieldPanel panel = new FieldPanel(client,user);
+                FieldPanel panel = new FieldPanel(client,user,Commands.this,locale);
+            }
+        });
+        toGulag.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String res = result.getText();
+                res+= '\n' + "Огласите имя предателя родины:" + '\n';
+                result.setText(res);
+                addInfo.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        information = dopInfo.getText();
+                        try {
+                            Response response = client.sendRequest(new Request(new String[]{"goToGulag",information},user));
+                            String res = result.getText();
+                            res+= '\n' + response.getResult();
+                            result.setText(res);
+                            if (response.getResult().equals("Национализация прошла успешно")){
+                                BeriaPanel beriaPanel = new BeriaPanel(information,client,user);
+                            }
+                            for (ActionListener listener : addInfo.getActionListeners()) {
+                                addInfo.removeActionListener(listener);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
             }
         });
     }
@@ -261,6 +319,17 @@ public class Commands extends JFrame{
     public void updateOrganization(Organization organization,String command){
         try {
             Response response = client.sendRequest(new Request(organization,new String[]{command,Integer.toString(id)},user));
+            String res = result.getText();
+            res+= '\n' + response.getResult();
+            result.setText(res);
+            Commands.this.setVisible(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateOrganizationWithId(Organization organization,String command, String id){
+        try {
+            Response response = client.sendRequest(new Request(organization,new String[]{command,id},user));
             String res = result.getText();
             res+= '\n' + response.getResult();
             result.setText(res);

@@ -190,6 +190,40 @@ public class DatabaseManager {
         }
         return false;
     }
+
+    public boolean goToGulag(String login){
+        Connection connection = connect();
+        int user_id = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(queryManager.getUserIdByStalin);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                user_id = resultSet.getInt(1);
+            }
+            preparedStatement = connection.prepareStatement(queryManager.goToGulag);
+            preparedStatement.setInt(1, user_id);
+            if(preparedStatement.executeUpdate()>0) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean deleteUser(String login){
+        Connection connection = connect();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(queryManager.deleteUser);
+            preparedStatement.setString(1,login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public boolean updateObject(int id, User user, Organization organization) {
         Connection connection = connect();
         int user_id = 0;
@@ -220,6 +254,7 @@ public class DatabaseManager {
             preparedStatement.setString(7, organization.getFullName());
             preparedStatement.setString(8, organization.getOfficialAddress().getZipCode());
             preparedStatement.setInt(9, user_id);
+            preparedStatement.setInt(10,id);
             resultSet = preparedStatement.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {

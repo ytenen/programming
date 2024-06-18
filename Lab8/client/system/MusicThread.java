@@ -13,9 +13,9 @@ public class MusicThread extends Thread{
     public void run(){
         while (true){
             try {
-                Player player = new Player(new FileInputStream(taksi));
+                Player player = new Player(new FileInputStream(peterburg));
                 player.play();
-                Player player1 = new Player(new FileInputStream(peterburg));
+                Player player1 = new Player(new FileInputStream(taksi));
                 player1.play();
                 Player player2 = new Player(new FileInputStream(sineva));
                 player2.play();

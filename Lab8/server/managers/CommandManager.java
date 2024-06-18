@@ -29,6 +29,8 @@ public class CommandManager {
         commands.put("register", new Register());
         commands.put("authorization", new Authorization());
         commands.put("exit_from_account", new ExitFromAccount());
+        commands.put("goToGulag",new goToGulag());
+        commands.put("deleteUser",new DeleteUser());
     }
 
     public static Response startExecuting(Request request)  {

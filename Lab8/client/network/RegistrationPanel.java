@@ -1,13 +1,12 @@
 package network;
 
-import javax.imageio.ImageIO;
+import managers.ResourceBundleManager;
+import system.TimeThread;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.lang.System.exit;
@@ -20,17 +19,31 @@ public class RegistrationPanel extends JFrame{
     private JButton logIn;
     private JTextField result;
     private JButton exit;
-
+    private JButton sssr;
+    private JButton norway;
+    private JButton ukr;
+    private JButton dom;
+    private JTextField time;
+    private Locale locale;
 
     private Client client;
-    public RegistrationPanel(Client client) {
+    public RegistrationPanel(Client client,Locale locale) {
+        this.locale = locale;
+        ResourceBundleManager resourceBundleManager = new ResourceBundleManager(locale);
         setContentPane(RegistrationPanel);
         this.client = client;
-        setTitle("Электронное предъявление партийного билета");
+        setTitle(resourceBundleManager.getString("predyav"));
+        login.setText(resourceBundleManager.getString("userName"));
+        logIn.setText(resourceBundleManager.getString("login"));
+        registration.setText(resourceBundleManager.getString("register"));
+        exit.setText(resourceBundleManager.getString("exit"));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(550,400);
+        setSize(1000,400);
         setLocationRelativeTo(null);
         setVisible(true);
+        time.setEditable(false);
+        TimeThread timeThread = new TimeThread(time);
+        timeThread.startUpdating(locale);
         result.setVisible(false);
         result.setEditable(false);
 
@@ -61,7 +74,7 @@ public class RegistrationPanel extends JFrame{
                         result.setVisible(true);
                     }else {
                         setVisible(false);
-                        Commands commands = new Commands(new User(newLogin,newPassword),client);
+                        Commands commands = new Commands(new User(newLogin,newPassword),client,locale);
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -72,6 +85,34 @@ public class RegistrationPanel extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 exit(0);
+            }
+        });
+        sssr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                network.RegistrationPanel panel = new RegistrationPanel(client,new Locale("ru","RU"));
+            }
+        });
+        norway.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                network.RegistrationPanel panel = new RegistrationPanel(client,new Locale("no","NO"));
+            }
+        });
+        ukr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                network.RegistrationPanel panel = new RegistrationPanel(client,new Locale("uk","UA"));
+            }
+        });
+        dom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                network.RegistrationPanel panel = new RegistrationPanel(client,new Locale("es","DO"));
             }
         });
     }

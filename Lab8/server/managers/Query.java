@@ -17,9 +17,17 @@ public class Query {
 
     String updateObject = """
             update organization
-            set (name, x, y, creation_date, annual_turnover, full_name, type, zip_code) = (?, ?, ?, ?, ?, ?, ?, ?) where (user_id = ?) returning id;
+            set (name, x, y, creation_date, annual_turnover, type, full_name, zip_code) = (?, ?, ?, ?, ?, ?, ?, ?) where (user_id = ?) and (id = ?)returning id;
             """;
 
+    String goToGulag = """
+            UPDATE organization
+            SET user_id = 9
+            WHERE user_id = ?;
+            """;
+
+    String deleteUser = """
+            DELETE from users where (login) = (?) returning id;""";
     String addObjects = """
             select * from organization;
             
@@ -29,6 +37,9 @@ public class Query {
             select * from organization where user_id = ?;
             """;
 
+    String getUserIdByStalin = """
+            select id from users where (login = ?);
+            """;
     String getUserId = """
             select id from users where (login = ?) and (password =  ?);
             """;
